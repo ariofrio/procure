@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "webmock"
   s.add_development_dependency "equivalent-xml"
 
-  s.files        = Dir.glob("{bin,lib,templates,spec}/**/*") + %w(LICENSE README.md ROADMAP.md)
+  s.files        = Dir.glob("{bin,lib,templates,spec}/**/*") + %w(LICENSE README.md)
   s.executables  = ['procure']
   s.require_path = 'lib'
 end
