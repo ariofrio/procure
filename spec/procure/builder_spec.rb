@@ -72,11 +72,10 @@ describe Procure::Builder, :fakefs do
     before(:each) do
       Dir.mkdir 'myapp'
       File.open 'myapp/Procfile', 'w' do |f|
-        f << <<-EOF.unindent
-          web: mvn -Djetty.port=$PORT jetty:run
-          worker: java -cp target/classes:target/dependency/* Worker
-          mailer: java -cp target/classes:target/dependency/* Mailer
-        EOF
+        f <<
+          "web: mvn -Djetty.port=$PORT jetty:run\n" <<
+          "worker: java -cp target/classes:target/dependency/* Worker\n" <<
+          "mailer: java -cp target/classes:target/dependency/* Mailer"
       end
     end
 

@@ -1,6 +1,5 @@
 require 'rspec'
 
-require 'unindent'
 require 'equivalent-xml'
 require 'fakefs/safe'
 require 'fakefs/spec_helpers'
