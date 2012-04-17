@@ -1,4 +1,7 @@
-Dir[File.dirname(__FILE__) + 'languages/*.rb'].each {|file| require file }
+require 'fakefs/safe'
+FakeFS.without do
+  Dir[File.dirname(__FILE__) + '/languages/*.rb'].each {|file| require file }
+end
 
 module Procure
   module Languages
@@ -11,10 +14,10 @@ module Procure
 
       # Return a list of supported languages, in order of preference
       def to_a
-        [:Java].map {|lang| Procure::Languages.const_get lang}
+        [:Java, :None].map {|lang| Procure::Languages.const_get lang}
       end
 
-      def recognize(entry)
+      def recognize
         detect { |x| x.recognize }
       end
     end

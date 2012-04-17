@@ -1,13 +1,17 @@
+require 'fileutils'
+
 require 'spec_helper'
 require 'procure/builder'
 
 describe Procure::Builder, :fakefs do
-  describe "with a one-role app" do
+  describe "with a one-role null web app" do
     before(:each) do
       Dir.mkdir 'myapp'
       File.open 'myapp/Procfile', 'w' do |f|
-        f << "web: mvn -Djetty.port=$PORT jetty:run"
+        f << %{web: echo "Hello world"}
       end
+      Dir.mkdir 'myapp/subdir'
+      FileUtils.touch 'myapp/subdir/file'
     end
 
     it "generates Azure service configuration" do
@@ -57,18 +61,32 @@ describe Procure::Builder, :fakefs do
       end
     end
 
-    it "builds the application (excluding roles)" do
+    it "builds the application" do
       Dir.chdir "myapp" do
-        subject.build_app
+        subject.build
         Dir.chdir "azure" do
-          File.exists? 'ServiceConfiguration.cscfg'
-          File.exists? 'ServiceDefinition.cscfg'
+          File.exists?('ServiceConfiguration.cscfg').should be_true
+          File.exists?('ServiceDefinition.cscfg').should be_true
+
+          File.exists?('WorkerRoleWeb').should be_true
+          Dir.chdir 'WorkerRoleWeb' do
+            File.exists?('Procfile').should be_true
+            File.exists?('subdir').should be_true
+            File.exists?('subdir/file').should be_true
+          end
         end
+      end
+    end
+
+    it "builds the application twice in a row without choking" do
+      Dir.chdir "myapp" do
+        subject.build
+        subject.build
       end
     end
   end
 
-  describe "with a three-role app" do
+  describe "with a three-role web app" do
     before(:each) do
       Dir.mkdir 'myapp'
       File.open 'myapp/Procfile', 'w' do |f|

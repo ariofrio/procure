@@ -1,5 +1,9 @@
 require 'mustache'
+require 'fileutils'
+require 'fakefs/safe'
+
 require 'procure/procfile'
+require 'procure/languages'
 
 module Procure
   class Builder
@@ -10,7 +14,15 @@ module Procure
       @name = File.basename Dir.pwd
     end
 
+    def language
+      Procure::Languages.recognize
+    end
+
     def build
+      if File.exists? 'azure'
+        FileUtils.rm_f 'azure'
+      end
+
       build_app
       build_roles
     end
@@ -32,8 +44,20 @@ module Procure
 
     def build_role(entry)
       dir = 'WorkerRole' + entry.name.capitalize
-      Dir.mkdir dir
-      Dir.chdir dir { language.create_role }
+      Dir.mkdir(dir)
+      Dir.chdir(dir) do
+        # FakeFS gets confused with Dir['../../*']
+        Dir.chdir('../..') { Dir['*'] }.each do |filename|
+          return if File.basename(filename) == 'azure'
+
+          if File.directory? filename
+            FileUtils.cp_r('../../' + filename, '.')
+          else
+            File.open(filename, 'w') {|f| f.write '../../' + filename }
+          end
+        end
+        language.create_role
+      end
     end
 
     def service_definition
