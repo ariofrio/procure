@@ -1,3 +1,4 @@
+# Procure [![Travis CI status](https://secure.travis-ci.org/ariofrio/procure.png)](http://travis-ci.org/ariofrio/procure)
 
 ## Resources
 
