@@ -1,0 +1,38 @@
+PATH
+  remote: .
+  specs:
+    procure (0.0.1)
+      mustache
+      require_all
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    diff-lcs (1.1.3)
+    equivalent-xml (0.2.9)
+      nokogiri (>= 1.4.3)
+    fakefs (0.4.0)
+    mustache (0.99.4)
+    nokogiri (1.5.2)
+    nokogiri (1.5.2-x86-mingw32)
+    require_all (1.2.1)
+    rspec (2.9.0)
+      rspec-core (~> 2.9.0)
+      rspec-expectations (~> 2.9.0)
+      rspec-mocks (~> 2.9.0)
+    rspec-core (2.9.0)
+    rspec-expectations (2.9.1)
+      diff-lcs (~> 1.1.3)
+    rspec-mocks (2.9.0)
+    unindent (1.0)
+
+PLATFORMS
+  ruby
+  x86-mingw32
+
+DEPENDENCIES
+  equivalent-xml
+  fakefs
+  procure!
+  rspec
+  unindent
