@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ServiceDefinition xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" name="{{ name }}">
-  {{# entries }}
+  {{# procfile.entries }}
   <WorkerRole name="WorkerRole{{ name.capitalize }}" vmsize="ExtraSmall">
     <Startup>
       <Task commandLine="powershell setup.ps1" executionContext="elevated" />
@@ -27,5 +27,5 @@
     </Endpoints>
     {{/ web? }}
   </WorkerRole>
-  {{/ entries }}
+  {{/ procfile.entries }}
 </ServiceDefinition>

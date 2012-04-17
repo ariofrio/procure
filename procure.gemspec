@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "rspec"
   s.add_development_dependency "fakefs"
+  s.add_development_dependency "webmock"
   s.add_development_dependency "unindent"
   s.add_development_dependency "equivalent-xml"
 

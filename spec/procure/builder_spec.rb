@@ -2,17 +2,15 @@ require 'spec_helper'
 require 'procure/builder'
 
 describe Procure::Builder, :fakefs do
-  describe "with a simple one-role web application" do
+  describe "with a one-role app" do
     before(:each) do
       Dir.mkdir 'myapp'
       File.open 'myapp/Procfile', 'w' do |f|
-        f << <<-EOF.unindent
-          web: mvn -Djetty.port=$PORT jetty:run
-        EOF
+        f << "web: mvn -Djetty.port=$PORT jetty:run"
       end
     end
 
-    it "generates appropiate Azure service configuration" do
+    it "generates Azure service configuration" do
       Dir.chdir 'myapp' do
         subject.service_configuration.should be_equivalent_to <<-EOF
           <?xml version="1.0"?>
@@ -25,7 +23,7 @@ describe Procure::Builder, :fakefs do
       end
     end
 
-    it "generates appropiate Azure service definition" do
+    it "generates Azure service definition" do
       Dir.chdir 'myapp' do
         subject.service_definition.should be_equivalent_to <<-EOF
         <?xml version="1.0" encoding="utf-8"?>
@@ -58,8 +56,19 @@ describe Procure::Builder, :fakefs do
         EOF
       end
     end
+
+    it "builds the application (excluding roles)" do
+      Dir.chdir "myapp" do
+        subject.build_app
+        Dir.chdir "azure" do
+          File.exists? 'ServiceConfiguration.cscfg'
+          File.exists? 'ServiceDefinition.cscfg'
+        end
+      end
+    end
   end
-  describe "with a three-role web application" do
+
+  describe "with a three-role app" do
     before(:each) do
       Dir.mkdir 'myapp'
       File.open 'myapp/Procfile', 'w' do |f|
@@ -71,7 +80,7 @@ describe Procure::Builder, :fakefs do
       end
     end
 
-    it "generates appropiate Azure service configuration" do
+    it "generates Azure service configuration" do
       Dir.chdir 'myapp' do
         subject.service_configuration.should be_equivalent_to <<-EOF
           <?xml version="1.0"?>
@@ -90,7 +99,7 @@ describe Procure::Builder, :fakefs do
       end
     end
 
-    it "generates appropiate Azure service definition" do
+    it "generates Azure service definition" do
       Dir.chdir 'myapp' do
         subject.service_definition.should be_equivalent_to <<-EOF
         <?xml version="1.0" encoding="utf-8"?>

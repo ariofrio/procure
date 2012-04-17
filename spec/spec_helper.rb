@@ -4,6 +4,7 @@ require 'unindent'
 require 'equivalent-xml'
 require 'fakefs/safe'
 require 'fakefs/spec_helpers'
+require 'webmock/rspec'
 
 $:.unshift File.expand_path("../../lib", __FILE__)
 

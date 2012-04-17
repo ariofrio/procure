@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <ServiceConfiguration xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" serviceName="{{ name }}" osFamily="2" osVersion="*">
-  {{# entries }}
+  {{# procfile.entries }}
   <Role name="WorkerRole{{ name.capitalize }}">
     <Instances count="{{ concurrency }}" />
   </Role>
-  {{/ entries }}
+  {{/ procfile.entries }}
 </ServiceConfiguration>
