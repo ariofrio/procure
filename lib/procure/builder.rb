@@ -46,15 +46,9 @@ module Procure
       dir = 'WorkerRole' + entry.name.capitalize
       Dir.mkdir(dir)
       Dir.chdir(dir) do
-        # FakeFS gets confused with Dir['../../*']
-        Dir.chdir('../..') { Dir['*'] }.each do |filename|
-          return if File.basename(filename) == 'azure'
-
-          if File.directory? filename
-            FileUtils.cp_r('../../' + filename, '.')
-          else
-            File.open(filename, 'w') {|f| f.write '../../' + filename }
-          end
+        # See https://github.com/defunkt/fakefs/issues/126
+        (Dir.chdir('../..') { Dir['*'] } - ['azure']).each do |filename|
+          FileUtils.cp_r('../../' + filename, '.')
         end
         language.create_role
       end
