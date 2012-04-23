@@ -61,8 +61,23 @@ describe Procure::Builder, :fakefs do
       end
     end
 
-    it "builds the application" do
-      Dir.chdir "myapp" do
+    describe "when building the application" do
+      before(:each) do
+        Dir.chdir 'myapp'
+      end
+
+      after(:each) do
+        FileUtils.rm_r 'azure'
+        Dir.chdir '..'
+      end
+
+      it "confines itself to the 'azure' subdirectory" do
+        old_files = Dir['*']
+        subject.build
+        Dir['*'].sort.should == (old_files + ['azure']).sort
+      end
+
+      it "builds the application" do
         subject.build
         Dir.chdir "azure" do
           File.exists?('ServiceConfiguration.cscfg').should be_true
@@ -70,16 +85,14 @@ describe Procure::Builder, :fakefs do
 
           File.exists?('WorkerRoleWeb').should be_true
           Dir.chdir 'WorkerRoleWeb' do
-            File.exists?('Procfile').should be_true
+            File.exists?('Procfile').should be_false
             File.exists?('subdir').should be_true
             File.exists?('subdir/file').should be_true
           end
         end
       end
-    end
 
-    it "builds the application twice in a row without choking" do
-      Dir.chdir "myapp" do
+      it "builds the application twice in a row without choking" do
         subject.build
         subject.build
       end

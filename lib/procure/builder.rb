@@ -19,9 +19,7 @@ module Procure
     end
 
     def build
-      if File.exists? 'azure'
-        FileUtils.rm_f 'azure'
-      end
+      FileUtils.rm_r 'azure' if File.exist? 'azure'
 
       build_app
       build_roles
@@ -50,6 +48,7 @@ module Procure
         (Dir.chdir('../..') { Dir['*'] } - ['azure']).each do |filename|
           FileUtils.cp_r('../../' + filename, '.')
         end
+        File.delete 'Procfile'
         language.create_role
       end
     end
