@@ -1,6 +1,5 @@
 require 'open-uri'
 require 'net/http'
-require 'fakefs/safe'
 
 module Procure
   module Languages
@@ -28,7 +27,7 @@ module Procure
         end
 
         def file(filename)
-          FakeFS.without { File.read(Procure::Builder.template_dir + filename) }
+          File.read(Procure::Builder.template_dir + filename)
         end
 
         def create_role

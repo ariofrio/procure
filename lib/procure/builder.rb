@@ -1,6 +1,5 @@
 require 'mustache'
 require 'fileutils'
-require 'fakefs/safe'
 
 require 'procure/procfile'
 require 'procure/languages'
@@ -67,9 +66,7 @@ module Procure
     private
 
     def render(name)
-      FakeFS.without do
-        Mustache.render File.read(self.class.template_dir + name), self
-      end
+      Mustache.render File.read(self.class.template_dir + name), self
     end
   end
 end

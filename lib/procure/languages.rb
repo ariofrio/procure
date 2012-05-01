@@ -1,7 +1,4 @@
-require 'fakefs/safe'
-FakeFS.without do
-  Dir[File.dirname(__FILE__) + '/languages/*.rb'].each {|file| require file }
-end
+Dir[File.dirname(__FILE__) + '/languages/*.rb'].each {|file| require file }
 
 module Procure
   module Languages
