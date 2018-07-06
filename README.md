@@ -10,3 +10,8 @@
 ## Resources
 
  - http://msdn.microsoft.com/en-us/library/windowsazure/gg557552.aspx#Endpoints
+ 
+## Alternatives
+
+ - https://content.nanobox.io/moving-from-heroku-to-azure/
+ 
